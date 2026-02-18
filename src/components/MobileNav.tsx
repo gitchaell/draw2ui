@@ -1,35 +1,33 @@
-import { useStore } from '@nanostores/react';
-import { viewModeStore, setViewMode } from '../stores/appStore';
-import clsx from 'clsx';
+import { useStore } from "@nanostores/react";
+import clsx from "clsx";
+import { Code, PenTool, SplitSquareHorizontal } from "lucide-react";
+import { setViewMode, viewModeStore } from "../stores/appStore";
 
 export default function MobileNav() {
 	const viewMode = useStore(viewModeStore);
 
 	return (
-		<div className="fixed bottom-0 left-0 right-0 z-30 bg-white dark:bg-zinc-900 border-t border-gray-200 dark:border-zinc-800 md:hidden flex justify-around p-2 pb-safe">
+		<div className="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-around border-t border-border bg-background/80 p-2 backdrop-blur-lg supports-[backdrop-filter]:bg-background/60 md:hidden pb-safe">
 			<button
-				onClick={() => setViewMode('draw')}
+				onClick={() => setViewMode("draw")}
 				className={clsx(
-					"flex flex-col items-center gap-1 p-2 rounded-lg flex-1",
-					viewMode === 'draw' ? "text-indigo-600 dark:text-indigo-400 bg-gray-100 dark:bg-zinc-800" : "text-gray-500 dark:text-gray-400"
+					"inline-flex flex-col items-center justify-center gap-1 rounded-md px-3 py-2 text-xs font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 ring-offset-background h-14 flex-1",
+					viewMode === "draw" ? "text-primary" : "text-muted-foreground",
 				)}
 			>
-				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-					<path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
-				</svg>
-				<span className="text-xs font-medium">Pizarra</span>
+				<PenTool className="h-5 w-5" />
+				<span>Pizarra</span>
 			</button>
+			<div className="w-px h-8 bg-border mx-2" />
 			<button
-				onClick={() => setViewMode('code')}
+				onClick={() => setViewMode("code")}
 				className={clsx(
-					"flex flex-col items-center gap-1 p-2 rounded-lg flex-1",
-					viewMode === 'code' ? "text-indigo-600 dark:text-indigo-400 bg-gray-100 dark:bg-zinc-800" : "text-gray-500 dark:text-gray-400"
+					"inline-flex flex-col items-center justify-center gap-1 rounded-md px-3 py-2 text-xs font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 ring-offset-background h-14 flex-1",
+					viewMode === "code" ? "text-primary" : "text-muted-foreground",
 				)}
 			>
-				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-					<path strokeLinecap="round" strokeLinejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" />
-				</svg>
-				<span className="text-xs font-medium">Código</span>
+				<Code className="h-5 w-5" />
+				<span>Código</span>
 			</button>
 		</div>
 	);

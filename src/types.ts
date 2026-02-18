@@ -14,9 +14,9 @@ export interface ProjectData {
 }
 
 export interface Settings {
-	theme: 'light' | 'dark';
+	theme: "light" | "dark";
 	credits: number;
-    openAIKey?: string; // If we add custom key support
+	openAIKey?: string; // If we add custom key support
 }
 
-export type ViewMode = 'draw' | 'code' | 'split';
+export type ViewMode = "draw" | "code" | "split";

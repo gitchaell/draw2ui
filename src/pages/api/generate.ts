@@ -20,7 +20,7 @@ export const POST: APIRoute = async ({ request }) => {
 
 		// Auth Options
 		// If using a service account JSON string in env var
-		let googleAuthOptions = undefined;
+		let googleAuthOptions: any = undefined;
 		if (process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON) {
 			try {
 				const credentials = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON);

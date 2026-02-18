@@ -1,17 +1,17 @@
 {
-  "name": "draw2ui",
-  "short_name": "draw2ui",
-  "description": "Dibuja prototipos y conviértelos en código UI con AI.",
-  "start_url": "/",
-  "display": "standalone",
-  "background_color": "#18181b",
-  "theme_color": "#6366f1",
-  "icons": [
-    {
-      "src": "/icon.svg",
-      "type": "image/svg+xml",
-      "sizes": "192x192 512x512",
-      "purpose": "any maskable"
-    }
-  ]
+	"name": "draw2ui",
+	"short_name": "draw2ui",
+	"description": "Dibuja prototipos y conviértelos en código UI con AI.",
+	"start_url": "/",
+	"display": "standalone",
+	"background_color": "#18181b",
+	"theme_color": "#6366f1",
+	"icons": [
+		{
+			"src": "/icon.svg",
+			"type": "image/svg+xml",
+			"sizes": "192x192 512x512",
+			"purpose": "any maskable"
+		}
+	]
 }

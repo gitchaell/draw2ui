@@ -1,10 +1,10 @@
-import { get, set, update, del } from 'idb-keyval';
-import type { Project, ProjectData, Settings } from '../types';
+import { del, get, set, update } from "idb-keyval";
+import type { Project, ProjectData, Settings } from "../types";
 
-const PROJECTS_KEY = 'draw2ui-projects';
-const SETTINGS_KEY = 'draw2ui-settings';
+const PROJECTS_KEY = "draw2ui-projects";
+const SETTINGS_KEY = "draw2ui-settings";
 const DEFAULT_SETTINGS: Settings = {
-	theme: 'dark', // Default to dark as per plan
+	theme: "dark", // Default to dark as per plan
 	credits: 10,
 };
 
@@ -29,7 +29,7 @@ export const db = {
 			id: newProject.id,
 			elements: [],
 			appState: {},
-			generatedHtml: '',
+			generatedHtml: "",
 		});
 
 		return newProject;
@@ -44,20 +44,20 @@ export const db = {
 			id,
 			elements: [],
 			appState: {},
-			generatedHtml: '',
+			generatedHtml: "",
 		};
 
 		await set(`project-${id}`, { ...current, ...data });
 
 		// Update timestamp in project list
 		await update(PROJECTS_KEY, (projects: Project[] = []) =>
-			projects.map((p) => (p.id === id ? { ...p, updatedAt: Date.now() } : p))
+			projects.map((p) => (p.id === id ? { ...p, updatedAt: Date.now() } : p)),
 		);
 	},
 
 	async deleteProject(id: string): Promise<void> {
 		await update(PROJECTS_KEY, (projects: Project[] = []) =>
-			projects.filter((p) => p.id !== id)
+			projects.filter((p) => p.id !== id),
 		);
 		await del(`project-${id}`);
 	},
