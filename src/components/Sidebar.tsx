@@ -35,7 +35,7 @@ export default function Sidebar() {
 	const handleCreateProject = async () => {
 		setLoading(true);
 		try {
-			const name = `Proyecto ${projects.length + 1}`;
+			const name = `Project ${projects.length + 1}`;
 			const newProject = await db.createProject(name);
 			setProjects([newProject, ...projects]);
 			setCurrentProject(newProject.id);
@@ -48,7 +48,7 @@ export default function Sidebar() {
 
     const handleDeleteProject = async (e: React.MouseEvent, id: string) => {
         e.stopPropagation();
-        if (!confirm('¿Estás seguro de eliminar este proyecto?')) return;
+        if (!confirm('Are you sure you want to delete this project?')) return;
 
         try {
             await db.deleteProject(id);
@@ -77,7 +77,7 @@ export default function Sidebar() {
                     size="icon"
 					onClick={() => setIsOpen(!isOpen)}
                     className="ml-auto h-8 w-8"
-					title={isOpen ? "Colapsar sidebar" : "Expandir sidebar"}
+					title={isOpen ? "Collapse sidebar" : "Expand sidebar"}
 				>
 					{isOpen ? <PanelLeftClose className="h-4 w-4" /> : <PanelLeftOpen className="h-4 w-4" />}
 				</Button>
@@ -94,7 +94,7 @@ export default function Sidebar() {
                                 className="w-full justify-start gap-2"
                             >
                                 <Plus className="h-4 w-4" />
-                                <span>Nuevo Proyecto</span>
+                                <span>New Project</span>
                             </Button>
                         </div>
                     ) : (
@@ -104,7 +104,7 @@ export default function Sidebar() {
                                 size="icon"
                                 onClick={handleCreateProject}
                                 disabled={loading}
-                                title="Nuevo Proyecto"
+                                title="New Project"
                             >
                                 <Plus className="h-4 w-4" />
                             </Button>
@@ -112,39 +112,61 @@ export default function Sidebar() {
                     )}
 
                     <div className="px-2">
-                        {isOpen && <h2 className="mb-2 px-2 text-xs font-semibold tracking-tight text-muted-foreground uppercase">Proyectos</h2>}
-                        <div className="space-y-1">
-                            {projects.map((project) => (
-                                <div
-                                    key={project.id}
-                                    onClick={() => setCurrentProject(project.id)}
-                                    className={clsx(
-                                        "group flex items-center justify-between rounded-md px-2 py-1.5 text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 cursor-pointer",
-                                        currentProject === project.id
-                                            ? "bg-secondary text-secondary-foreground"
-                                            : "hover:bg-accent hover:text-accent-foreground text-muted-foreground"
-                                    )}
-                                    title={project.name}
-                                >
-                                    <div className="flex items-center gap-2 overflow-hidden">
-                                        <Folder className={clsx("h-4 w-4 shrink-0", currentProject === project.id ? "text-foreground" : "text-muted-foreground")} />
-                                        {isOpen && <span className="truncate">{project.name}</span>}
-                                    </div>
+                        {isOpen && projects.length > 0 && <h2 className="mb-2 px-2 text-xs font-semibold tracking-tight text-muted-foreground uppercase">Projects</h2>}
 
-                                    {isOpen && (
-                                        <Button
-                                            variant="ghost"
-                                            size="icon"
-                                            onClick={(e) => handleDeleteProject(e, project.id)}
-                                            className="opacity-0 group-hover:opacity-100 h-6 w-6 hover:bg-destructive/10 hover:text-destructive"
-                                            title="Eliminar"
-                                        >
-                                            <Trash2 className="h-3 w-3" />
-                                        </Button>
-                                    )}
+                        {projects.length === 0 ? (
+                            <div className="flex flex-col items-center justify-center p-4 text-center text-muted-foreground gap-2 mt-4">
+                                <div className="p-2 rounded-full bg-muted">
+                                    <Folder className="h-6 w-6 opacity-50" />
                                 </div>
-                            ))}
-                        </div>
+                                {isOpen && (
+                                    <>
+                                        <p className="text-sm font-medium">No projects yet</p>
+                                        <p className="text-xs">Create one to start!</p>
+                                    </>
+                                )}
+                            </div>
+                        ) : (
+                            <div className="space-y-1">
+                                {projects.map((project) => (
+                                    <div
+                                        key={project.id}
+                                        role="button"
+                                        tabIndex={0}
+                                        onClick={() => setCurrentProject(project.id)}
+                                        onKeyDown={(e) => {
+                                            if (e.key === 'Enter' || e.key === ' ') {
+                                                setCurrentProject(project.id);
+                                            }
+                                        }}
+                                        className={clsx(
+                                            "group flex items-center justify-between rounded-md px-2 py-1.5 text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 cursor-pointer",
+                                            currentProject === project.id
+                                                ? "bg-secondary text-secondary-foreground"
+                                                : "hover:bg-accent hover:text-accent-foreground text-muted-foreground"
+                                        )}
+                                        title={project.name}
+                                    >
+                                        <div className="flex items-center gap-2 overflow-hidden">
+                                            <Folder className={clsx("h-4 w-4 shrink-0", currentProject === project.id ? "text-foreground" : "text-muted-foreground")} />
+                                            {isOpen && <span className="truncate">{project.name}</span>}
+                                        </div>
+
+                                        {isOpen && (
+                                            <Button
+                                                variant="ghost"
+                                                size="icon"
+                                                onClick={(e) => handleDeleteProject(e, project.id)}
+                                                className="opacity-0 group-hover:opacity-100 h-6 w-6 hover:bg-destructive/10 hover:text-destructive"
+                                                title="Delete"
+                                            >
+                                                <Trash2 className="h-3 w-3" />
+                                            </Button>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+                        )}
                     </div>
                 </div>
             </ScrollArea>
@@ -155,7 +177,7 @@ export default function Sidebar() {
                     {isOpen && (
                         <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground">
                             <Settings className="h-4 w-4" />
-                            <span>Configuración</span>
+                            <span>Settings</span>
                         </Button>
                     )}
                     <ThemeToggle />

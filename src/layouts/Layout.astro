@@ -7,11 +7,11 @@ interface Props {
 	description?: string;
 }
 
-const { title, description = "Diseña tu UI rápida y prácticamente con IA." } = Astro.props;
+const { title, description = "Design your UI quickly and practically with AI." } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="es" class="dark">
+<html lang="en" class="dark">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -62,7 +62,7 @@ const { title, description = "Diseña tu UI rápida y prácticamente con IA." } 
 			window.localStorage.setItem('theme', theme);
 		</script>
 	</head>
-	<body class="h-screen w-screen overflow-hidden bg-background text-foreground font-sans">
+	<body class="h-[100dvh] w-screen overflow-hidden bg-background text-foreground font-sans">
 		<slot />
 		<Analytics client:idle />
 	</body>

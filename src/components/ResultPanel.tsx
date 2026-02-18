@@ -3,7 +3,7 @@ import { useStore } from '@nanostores/react';
 import { currentProjectDataStore } from '../stores/appStore';
 import { toPng, toSvg } from 'html-to-image';
 import clsx from 'clsx';
-import { Copy, Download, Code, Monitor, Smartphone, Tablet } from 'lucide-react';
+import { Copy, Download, Code, Monitor, Smartphone, Tablet, Wand2 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -54,7 +54,7 @@ export default function ResultPanel() {
 
     const handleCopyHtml = () => {
         navigator.clipboard.writeText(getProcessedHtml());
-        toast.success("HTML copiado al portapapeles");
+        toast.success("HTML copied to clipboard");
     };
 
     const handleDownloadImage = async (format: 'png' | 'svg') => {
@@ -68,23 +68,23 @@ export default function ResultPanel() {
             link.download = `ui-design.${format}`;
             link.href = dataUrl;
             link.click();
-            toast.success(`Imagen descargada como ${format.toUpperCase()}`);
+            toast.success(`Image downloaded as ${format.toUpperCase()}`);
         } catch (err) {
             console.error('Failed to download image', err);
-            toast.error("Error al descargar la imagen");
+            toast.error("Error downloading image");
         }
     };
 
     if (!projectData || !projectData.generatedHtml) {
         return (
-            <div className="flex h-full flex-col items-center justify-center gap-4 text-muted-foreground p-8 text-center bg-muted/10">
-                <div className="rounded-full bg-muted p-4">
-                    <Code className="h-8 w-8 opacity-50" />
+            <div className="flex h-full flex-col items-center justify-center gap-6 text-muted-foreground p-8 text-center bg-muted/10">
+                <div className="rounded-full bg-background p-6 shadow-sm ring-1 ring-border">
+                    <Wand2 className="h-10 w-10 opacity-50 text-primary" />
                 </div>
-                <div className="space-y-2">
-                    <h3 className="font-semibold text-foreground">Sin código generado</h3>
-                    <p className="text-sm max-w-xs text-muted-foreground">
-                        Dibuja en la pizarra y presiona "Generar UI" para ver el resultado aquí.
+                <div className="space-y-2 max-w-sm">
+                    <h3 className="text-lg font-semibold text-foreground">No code generated yet</h3>
+                    <p className="text-sm text-muted-foreground">
+                        Start drawing your idea on the whiteboard, then click <span className="font-medium text-foreground">"Generate UI"</span> to bring it to life here.
                     </p>
                 </div>
             </div>
@@ -140,7 +140,7 @@ export default function ResultPanel() {
                                     <Copy className="h-4 w-4" />
                                 </Button>
                             </TooltipTrigger>
-                            <TooltipContent>Copiar HTML</TooltipContent>
+                            <TooltipContent>Copy HTML</TooltipContent>
                         </Tooltip>
                     </TooltipProvider>
 
@@ -156,7 +156,7 @@ export default function ResultPanel() {
                                     <Download className="h-4 w-4" />
                                 </Button>
                             </TooltipTrigger>
-                            <TooltipContent>Descargar PNG</TooltipContent>
+                            <TooltipContent>Download PNG</TooltipContent>
                         </Tooltip>
                     </TooltipProvider>
                 </div>

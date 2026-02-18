@@ -22,7 +22,7 @@ export default function Editor() {
 
     const handleGenerateRequest = useCallback((elements: any[], appState: any, files: any) => {
         if (!elements || elements.length === 0) {
-            toast.error("La pizarra está vacía. Dibuja algo primero.");
+            toast.error("The whiteboard is empty. Draw something first.");
             return;
         }
         setTempElements(elements);
@@ -85,13 +85,13 @@ export default function Editor() {
                     } else {
                         setViewMode('split');
                     }
-                    toast.success("Interfaz generada correctamente");
+                    toast.success("Interface generated successfully");
                 }
             };
 
         } catch (error) {
             console.error('Generation failed', error);
-            toast.error("Error al generar la UI.");
+            toast.error("Error generating UI.");
         } finally {
             setLoading(false);
             setIsModalOpen(false);
@@ -101,7 +101,7 @@ export default function Editor() {
     if (!currentProjectId) {
         return (
             <div className="flex items-center justify-center h-full text-muted-foreground">
-                Selecciona o crea un proyecto para comenzar.
+                Select or create a project to start.
             </div>
         );
     }

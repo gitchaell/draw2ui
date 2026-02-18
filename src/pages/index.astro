@@ -6,13 +6,13 @@ import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="draw2ui - Draw to UI with AI">
-	<div className="flex h-screen w-screen overflow-hidden">
+	<div class="flex h-[100dvh] w-screen overflow-hidden">
 		{/* Sidebar is hidden on mobile by CSS or state inside component, but we need to structure it properly */}
-		<div className="hidden md:block h-full relative z-20">
+		<div class="hidden md:block h-full relative z-20">
 			<Sidebar client:load />
 		</div>
 
-		<div className="flex-1 flex flex-col h-full relative z-10">
+		<div class="flex-1 flex flex-col h-full relative z-10">
 			{/* Editor handles the main view (whiteboard + result) */}
 			<Editor client:only="react" />
 		</div>
