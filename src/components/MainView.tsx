@@ -22,7 +22,7 @@ export default function MainView({ whiteboard, result }: MainViewProps) {
 
 	if (isMobile) {
 		return (
-			<main className="flex-1 relative h-full w-full overflow-hidden pb-16">
+			<main className="flex-1 relative w-full overflow-hidden">
 				{/* Mobile View: Toggle visibility based on viewMode */}
 				<div
 					className={clsx(
@@ -45,7 +45,7 @@ export default function MainView({ whiteboard, result }: MainViewProps) {
 	}
 
 	return (
-		<main className="flex-1 h-full w-full overflow-hidden flex">
+		<main className="flex-1 w-full overflow-hidden flex">
 			<PanelGroup direction="horizontal">
 				<Panel
 					defaultSize={50}

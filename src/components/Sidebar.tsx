@@ -28,7 +28,7 @@ export default function Sidebar() {
 	return (
 		<aside
 			className={clsx(
-				"fixed left-0 top-0 h-full z-20 flex flex-col transition-all duration-300 ease-in-out border-r bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60",
+				"h-full z-20 flex flex-col transition-all duration-300 ease-in-out border-r bg-background",
 				isOpen ? "w-64" : "w-16"
 			)}
 		>

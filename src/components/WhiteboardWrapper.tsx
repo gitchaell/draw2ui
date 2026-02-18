@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, forwardRef, useImperativeHandle } from 'react';
 import { Excalidraw } from '@excalidraw/excalidraw';
 import "@excalidraw/excalidraw/index.css";
 import type { ExcalidrawElement } from '@excalidraw/excalidraw/types/element/types';
@@ -6,20 +6,35 @@ import type { AppState, ExcalidrawImperativeAPI } from '@excalidraw/excalidraw/t
 import { useStore } from '@nanostores/react';
 import { themeStore } from '../stores/appStore';
 import { db } from '../lib/db';
-import { Wand2 } from 'lucide-react';
-import { Button } from "@/components/ui/button";
 
 interface WhiteboardWrapperProps {
 	projectId: string;
 	onGenerate: (elements: readonly ExcalidrawElement[], appState: AppState, files: any) => void;
 }
 
-export default function WhiteboardWrapper({ projectId, onGenerate }: WhiteboardWrapperProps) {
+export interface WhiteboardWrapperRef {
+    getSnapshot: () => { elements: readonly ExcalidrawElement[]; appState: AppState; files: any } | null;
+}
+
+const WhiteboardWrapper = forwardRef<WhiteboardWrapperRef, WhiteboardWrapperProps>(({ projectId, onGenerate }, ref) => {
 	const theme = useStore(themeStore);
 	const [excalidrawAPI, setExcalidrawAPI] = useState<ExcalidrawImperativeAPI | null>(null);
 	const [loaded, setLoaded] = useState(false);
     const isSaving = useRef(false);
     const saveTimeout = useRef<NodeJS.Timeout | null>(null);
+
+    useImperativeHandle(ref, () => ({
+        getSnapshot: () => {
+            if (excalidrawAPI) {
+                return {
+                    elements: excalidrawAPI.getSceneElements(),
+                    appState: excalidrawAPI.getAppState(),
+                    files: excalidrawAPI.getFiles(),
+                };
+            }
+            return null;
+        }
+    }));
 
 	useEffect(() => {
 		let isMounted = true;
@@ -99,24 +114,10 @@ export default function WhiteboardWrapper({ projectId, onGenerate }: WhiteboardW
                     }
                 }}
 			/>
-
-            {/* Generate Button Overlay */}
-            <div className="absolute bottom-6 left-6 z-10">
-                <Button
-                    onClick={() => {
-                        if (excalidrawAPI) {
-                            const elements = excalidrawAPI.getSceneElements();
-                            const appState = excalidrawAPI.getAppState();
-                            const files = excalidrawAPI.getFiles();
-                            onGenerate(elements, appState, files);
-                        }
-                    }}
-                    className="shadow-lg animate-in fade-in zoom-in duration-300 gap-2 rounded-full"
-                >
-                    <Wand2 className="h-4 w-4" />
-                    Generate UI
-                </Button>
-            </div>
 		</div>
 	);
-}
+});
+
+WhiteboardWrapper.displayName = "WhiteboardWrapper";
+
+export default WhiteboardWrapper;
