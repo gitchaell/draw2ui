@@ -30,7 +30,7 @@ export default function WhiteboardWrapper({ projectId, onGenerate }: WhiteboardW
 				if (isMounted && data && excalidrawAPI) {
 					excalidrawAPI.updateScene({
 						elements: data.elements?.length ? data.elements : undefined,
-						appState: data.appState || { viewBackgroundColor: theme === 'dark' ? 'hsl(240 10% 3.9%)' : '#ffffff' },
+						appState: data.appState || { viewBackgroundColor: theme === 'dark' ? 'hsl(240 6% 10%)' : 'hsl(0 0% 98%)' },
 					});
 				}
 			} catch (error) {
@@ -80,7 +80,7 @@ export default function WhiteboardWrapper({ projectId, onGenerate }: WhiteboardW
 				theme={theme}
 				initialData={{
 					appState: {
-						viewBackgroundColor: theme === 'dark' ? 'hsl(240 10% 3.9%)' : '#ffffff',
+						viewBackgroundColor: theme === 'dark' ? 'hsl(240 6% 10%)' : 'hsl(0 0% 98%)',
 						currentItemFontFamily: 1,
                         gridSize: 20,
 					},
@@ -101,7 +101,7 @@ export default function WhiteboardWrapper({ projectId, onGenerate }: WhiteboardW
 			/>
 
             {/* Generate Button Overlay */}
-            <div className="absolute top-4 right-4 z-10">
+            <div className="absolute bottom-6 left-6 z-10">
                 <Button
                     onClick={() => {
                         if (excalidrawAPI) {
