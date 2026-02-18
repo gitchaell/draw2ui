@@ -7,6 +7,7 @@ import ThemeToggle from './ThemeToggle';
 import { Plus, Trash2, Folder, PanelLeftClose, PanelLeftOpen, Settings } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import SettingsDialog from './SettingsDialog';
 
 interface SidebarListProps {
     collapsed?: boolean;
@@ -18,6 +19,7 @@ export default function SidebarList({ collapsed = false, onToggleCollapse, onSel
     const projects = useStore(projectsStore);
     const currentProject = useStore(currentProjectStore);
     const [loading, setLoading] = useState(false);
+    const [showSettings, setShowSettings] = useState(false);
 
     const handleCreateProject = async () => {
         setLoading(true);
@@ -166,7 +168,7 @@ export default function SidebarList({ collapsed = false, onToggleCollapse, onSel
             <div className="p-4 border-t bg-muted/20">
                 <div className={clsx("flex items-center gap-2", !collapsed ? "justify-between" : "justify-center flex-col gap-4")}>
                     {!collapsed && (
-                        <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground">
+                        <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground" onClick={() => setShowSettings(true)}>
                             <Settings className="h-4 w-4" />
                             <span>Settings</span>
                         </Button>
@@ -174,6 +176,8 @@ export default function SidebarList({ collapsed = false, onToggleCollapse, onSel
                     <ThemeToggle />
                 </div>
             </div>
+
+            <SettingsDialog open={showSettings} onOpenChange={setShowSettings} />
         </div>
     );
 }

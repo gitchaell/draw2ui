@@ -1,18 +1,21 @@
 import { useStore } from '@nanostores/react';
 import { currentProjectStore, currentProjectDataStore, setCurrentProjectData, viewModeStore, setViewMode } from '../stores/appStore';
 import { db } from '../lib/db';
-import WhiteboardWrapper from './WhiteboardWrapper';
+import WhiteboardWrapper, { type WhiteboardWrapperRef } from './WhiteboardWrapper';
 import GenerateModal from './GenerateModal';
 import MainView from './MainView';
 import ResultPanel from './ResultPanel';
+import BottomBar from './BottomBar';
 import { exportToBlob } from '@excalidraw/excalidraw';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import { toast, Toaster } from "sonner";
 
 export default function Editor() {
     const currentProjectId = useStore(currentProjectStore);
     const currentProjectData = useStore(currentProjectDataStore);
     const viewMode = useStore(viewModeStore);
+
+    const whiteboardRef = useRef<WhiteboardWrapperRef>(null);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -30,6 +33,15 @@ export default function Editor() {
         setTempFiles(files);
         setIsModalOpen(true);
     }, []);
+
+    const handleGenerateTrigger = () => {
+        if (whiteboardRef.current) {
+            const snapshot = whiteboardRef.current.getSnapshot();
+            if (snapshot) {
+                handleGenerateRequest(snapshot.elements, snapshot.appState, snapshot.files);
+            }
+        }
+    };
 
     const handleGenerateConfirm = async (prompt: string) => {
         if (!currentProjectId) return;
@@ -100,9 +112,12 @@ export default function Editor() {
 
     if (!currentProjectId) {
         return (
-            <div className="flex items-center justify-center h-full text-muted-foreground">
-                Select or create a project to start.
-            </div>
+            <>
+                <div className="flex flex-1 items-center justify-center h-full text-muted-foreground">
+                    Select or create a project to start.
+                </div>
+                <BottomBar onGenerate={handleGenerateTrigger} />
+            </>
         );
     }
 
@@ -111,6 +126,7 @@ export default function Editor() {
             <MainView
                 whiteboard={
                     <WhiteboardWrapper
+                        ref={whiteboardRef}
                         projectId={currentProjectId}
                         onGenerate={handleGenerateRequest}
                     />
@@ -119,6 +135,8 @@ export default function Editor() {
                     <ResultPanel />
                 }
             />
+
+            <BottomBar onGenerate={handleGenerateTrigger} />
 
             <GenerateModal
                 isOpen={isModalOpen}

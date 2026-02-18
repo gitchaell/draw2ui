@@ -1,6 +1,5 @@
 ---
 import Editor from "../components/Editor";
-import MobileNav from "../components/MobileNav";
 import Sidebar from "../components/Sidebar";
 import Layout from "../layouts/Layout.astro";
 ---
@@ -16,8 +15,5 @@ import Layout from "../layouts/Layout.astro";
 			{/* Editor handles the main view (whiteboard + result) */}
 			<Editor client:only="react" />
 		</div>
-
-		{/* Mobile Navigation */}
-		<MobileNav client:media="(max-width: 768px)" />
 	</div>
 </Layout>
