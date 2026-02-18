@@ -26,16 +26,16 @@ export default function MainView({ whiteboard, result }: MainViewProps) {
 				{/* Mobile View: Toggle visibility based on viewMode */}
 				<div
 					className={clsx(
-						"absolute inset-0 w-full h-full transition-transform duration-300 ease-in-out",
-						viewMode === "draw" ? "translate-x-0" : "-translate-x-full",
+						"absolute inset-0 w-full h-full",
+						viewMode === "draw" ? "block z-10" : "hidden",
 					)}
 				>
 					{whiteboard}
 				</div>
 				<div
 					className={clsx(
-						"absolute inset-0 w-full h-full transition-transform duration-300 ease-in-out",
-						viewMode === "code" ? "translate-x-0" : "translate-x-full",
+						"absolute inset-0 w-full h-full",
+						viewMode === "code" ? "block z-10" : "hidden",
 					)}
 				>
 					{result}
