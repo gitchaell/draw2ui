@@ -1,12 +1,12 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { Excalidraw } from '@excalidraw/excalidraw';
+import "@excalidraw/excalidraw/index.css";
 import type { ExcalidrawElement } from '@excalidraw/excalidraw/types/element/types';
 import type { AppState, ExcalidrawImperativeAPI } from '@excalidraw/excalidraw/types/types';
 import { useStore } from '@nanostores/react';
 import { themeStore } from '../stores/appStore';
 import { db } from '../lib/db';
 import { Wand2 } from 'lucide-react';
-import clsx from 'clsx';
 import { Button } from "@/components/ui/button";
 
 interface WhiteboardWrapperProps {
