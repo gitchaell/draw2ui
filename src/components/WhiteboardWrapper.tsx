@@ -49,7 +49,7 @@ export default function WhiteboardWrapper({ projectId, onGenerate }: WhiteboardW
 		};
 	}, [projectId, excalidrawAPI, theme]);
 
-	const handleChange = useCallback((elements: readonly ExcalidrawElement[], appState: AppState, files: any) => {
+	const handleChange = useCallback((elements: readonly ExcalidrawElement[], appState: AppState, _files: any) => {
 		if (!loaded) return;
 
 		if (saveTimeout.current) {
@@ -75,7 +75,7 @@ export default function WhiteboardWrapper({ projectId, onGenerate }: WhiteboardW
 	}, [projectId, loaded]);
 
 	return (
-		<div className="w-full h-full relative group">
+		<div className="w-full h-full relative group" style={{ touchAction: 'none' }}>
 			<Excalidraw
 				theme={theme}
 				initialData={{
@@ -114,7 +114,7 @@ export default function WhiteboardWrapper({ projectId, onGenerate }: WhiteboardW
                     className="shadow-lg animate-in fade-in zoom-in duration-300 gap-2 rounded-full"
                 >
                     <Wand2 className="h-4 w-4" />
-                    Generar UI
+                    Generate UI
                 </Button>
             </div>
 		</div>

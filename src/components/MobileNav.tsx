@@ -2,6 +2,7 @@ import { useStore } from '@nanostores/react';
 import { viewModeStore, setViewMode } from '../stores/appStore';
 import { PenTool, Code } from 'lucide-react';
 import { Button } from "@/components/ui/button";
+import ThemeToggle from './ThemeToggle';
 
 export default function MobileNav() {
 	const viewMode = useStore(viewModeStore);
@@ -14,7 +15,7 @@ export default function MobileNav() {
                 className="flex-1 flex-col h-14 gap-1 rounded-md"
 			>
 				<PenTool className="h-5 w-5" />
-				<span className="text-xs">Pizarra</span>
+				<span className="text-xs">Whiteboard</span>
 			</Button>
 			<div className="w-px h-8 bg-border mx-2" />
 			<Button
@@ -23,8 +24,12 @@ export default function MobileNav() {
                 className="flex-1 flex-col h-14 gap-1 rounded-md"
 			>
 				<Code className="h-5 w-5" />
-				<span className="text-xs">Código</span>
+				<span className="text-xs">Code</span>
 			</Button>
+            <div className="w-px h-8 bg-border mx-2" />
+            <div className="flex flex-col items-center justify-center h-14 w-14">
+                <ThemeToggle />
+            </div>
 		</div>
 	);
 }
