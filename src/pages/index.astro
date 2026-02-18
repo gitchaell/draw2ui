@@ -1,0 +1,23 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Editor from '../components/Editor';
+import Sidebar from '../components/Sidebar';
+import MobileNav from '../components/MobileNav';
+---
+
+<Layout title="draw2ui - Draw to UI with AI">
+	<div className="flex h-screen w-screen overflow-hidden">
+		{/* Sidebar is hidden on mobile by CSS or state inside component, but we need to structure it properly */}
+		<div className="hidden md:block h-full relative z-20">
+			<Sidebar client:load />
+		</div>
+
+		<div className="flex-1 flex flex-col h-full relative z-10">
+			{/* Editor handles the main view (whiteboard + result) */}
+			<Editor client:only="react" />
+		</div>
+
+		{/* Mobile Navigation */}
+		<MobileNav client:media="(max-width: 768px)" />
+	</div>
+</Layout>

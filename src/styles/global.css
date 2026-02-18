@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+	html {
+		@apply antialiased;
+	}
+	body {
+		@apply bg-white text-gray-900 transition-colors duration-300 dark:bg-zinc-950 dark:text-zinc-100;
+	}
+}
+
+/* Excalidraw overrides for dark mode */
+.dark .excalidraw {
+	--color-background: #09090b !important; /* zinc-950 */
+	--color-surface: #18181b !important; /* zinc-900 */
+	--color-surface-low: #27272a !important; /* zinc-800 */
+}
