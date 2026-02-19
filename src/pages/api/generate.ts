@@ -30,7 +30,7 @@ export const POST: APIRoute = async ({ request }) => {
 		const genAI = new GoogleGenerativeAI(apiKey);
 
 		// List of models to try in order of preference
-		const modelsToTry = ["gemini-1.5-flash", "gemini-1.5-flash-latest", "gemini-1.5-pro"];
+		const modelsToTry = ["gemini-2.5-flash", "gemini-1.5-flash", "gemini-1.5-pro"];
 		let lastError = null;
 		let generatedHtml = null;
 
