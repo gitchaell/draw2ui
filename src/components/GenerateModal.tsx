@@ -1,13 +1,13 @@
-import { useState } from 'react';
-import { Loader2, Wand2 } from 'lucide-react';
+import { useState } from "react";
+import { Loader2, Wand2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 
@@ -19,7 +19,7 @@ interface GenerateModalProps {
 }
 
 export default function GenerateModal({ isOpen, onClose, onConfirm, loading }: GenerateModalProps) {
-	const [prompt, setPrompt] = useState('');
+	const [prompt, setPrompt] = useState("");
 
 	return (
 		<Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
@@ -39,9 +39,9 @@ export default function GenerateModal({ isOpen, onClose, onConfirm, loading }: G
 					/>
 				</div>
 				<DialogFooter>
-                    <Button variant="outline" onClick={onClose} disabled={loading}>
-                        Cancel
-                    </Button>
+					<Button variant="outline" onClick={onClose} disabled={loading}>
+						Cancel
+					</Button>
 					<Button onClick={() => onConfirm(prompt)} disabled={loading} className="gap-2">
 						{loading ? (
 							<>
@@ -50,7 +50,7 @@ export default function GenerateModal({ isOpen, onClose, onConfirm, loading }: G
 							</>
 						) : (
 							<>
-                                <Wand2 className="h-4 w-4" />
+								<Wand2 className="h-4 w-4" />
 								Generate
 							</>
 						)}

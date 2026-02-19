@@ -1,7 +1,7 @@
-import { useStore } from '@nanostores/react';
-import { themeStore, setTheme } from '../stores/appStore';
-import { useEffect, useState } from 'react';
-import { Sun, Moon } from 'lucide-react';
+import { useStore } from "@nanostores/react";
+import { themeStore, setTheme } from "../stores/appStore";
+import { useEffect, useState } from "react";
+import { Sun, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function ThemeToggle() {
@@ -11,23 +11,23 @@ export default function ThemeToggle() {
 	useEffect(() => {
 		setMounted(true);
 		// Sync with localStorage on mount
-		const savedTheme = localStorage.getItem('theme') as 'light' | 'dark';
+		const savedTheme = localStorage.getItem("theme") as "light" | "dark";
 		if (savedTheme) {
 			setTheme(savedTheme);
 		}
 	}, []);
 
 	useEffect(() => {
-		if (theme === 'dark') {
-			document.documentElement.classList.add('dark');
+		if (theme === "dark") {
+			document.documentElement.classList.add("dark");
 		} else {
-			document.documentElement.classList.remove('dark');
+			document.documentElement.classList.remove("dark");
 		}
-		localStorage.setItem('theme', theme);
+		localStorage.setItem("theme", theme);
 	}, [theme]);
 
 	const toggleTheme = () => {
-		setTheme(theme === 'dark' ? 'light' : 'dark');
+		setTheme(theme === "dark" ? "light" : "dark");
 	};
 
 	if (!mounted) return <div className="w-9 h-9" />;
