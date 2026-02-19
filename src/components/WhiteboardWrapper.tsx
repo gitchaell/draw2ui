@@ -4,7 +4,7 @@ import "@excalidraw/excalidraw/index.css";
 import type { ExcalidrawElement } from "@excalidraw/excalidraw/types/element/types";
 import type { AppState, ExcalidrawImperativeAPI } from "@excalidraw/excalidraw/types/types";
 import { useStore } from "@nanostores/react";
-import { themeStore } from "../stores/appStore";
+import { themeStore, setCurrentProjectData } from "../stores/appStore";
 import { db } from "../lib/db";
 import { LO_FI_WIREFRAMING_KIT } from "../lib/lo-fi-wireframing-kit";
 
@@ -49,6 +49,9 @@ const WhiteboardWrapper = forwardRef<WhiteboardWrapperRef, WhiteboardWrapperProp
 				try {
 					const data = await db.getProjectData(projectId);
 					if (isMounted && data && excalidrawAPI) {
+						// Sync global project data (including generated HTML)
+						setCurrentProjectData(data);
+
 						excalidrawAPI.updateScene({
 							elements: data.elements?.length ? data.elements : undefined,
 							appState: data.appState || {

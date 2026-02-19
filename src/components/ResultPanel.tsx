@@ -20,8 +20,18 @@ import {
 	ZoomIn,
 	ZoomOut,
 	Maximize,
+	Loader2,
+	Settings2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+	Sheet,
+	SheetContent,
+	SheetDescription,
+	SheetHeader,
+	SheetTitle,
+	SheetTrigger,
+} from "@/components/ui/sheet";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import {
@@ -142,6 +152,37 @@ export default function ResultPanel() {
 		setPreviewSettings({ scale: 1 });
 	};
 
+	// Touch Zoom Logic
+	const touchStartDist = useRef<number | null>(null);
+	const startScale = useRef<number>(1);
+
+	const handleTouchStart = (e: React.TouchEvent) => {
+		if (e.touches.length === 2) {
+			const dist = Math.hypot(
+				e.touches[0].clientX - e.touches[1].clientX,
+				e.touches[0].clientY - e.touches[1].clientY,
+			);
+			touchStartDist.current = dist;
+			startScale.current = settings.scale;
+		}
+	};
+
+	const handleTouchMove = (e: React.TouchEvent) => {
+		if (e.touches.length === 2 && touchStartDist.current !== null) {
+			const dist = Math.hypot(
+				e.touches[0].clientX - e.touches[1].clientX,
+				e.touches[0].clientY - e.touches[1].clientY,
+			);
+			const scaleFactor = dist / touchStartDist.current;
+			const newScale = Math.min(Math.max(startScale.current * scaleFactor, 0.25), 2);
+			setPreviewSettings({ scale: newScale });
+		}
+	};
+
+	const handleTouchEnd = () => {
+		touchStartDist.current = null;
+	};
+
 	return (
 		<div className="flex flex-col h-full bg-background relative">
 			{/* Toolbar - Always visible */}
@@ -165,41 +206,109 @@ export default function ResultPanel() {
 					</TabsList>
 				</Tabs>
 
-				{/* Colors */}
-				<div className="flex items-center gap-1.5 border-r pr-2 mr-2 shrink-0">
-					{COLORS.map((color) => (
-						<button
-							key={color.value}
-							onClick={() => setPreviewSettings({ themeColor: color.value })}
-							className={clsx(
-								"h-4 w-4 rounded-full ring-offset-background transition-all hover:scale-110 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
-								color.class,
-								settings.themeColor === color.value &&
-									"ring-2 ring-ring ring-offset-2",
-							)}
-							title={color.name}
-						/>
-					))}
+				{/* Desktop: Colors & Fonts */}
+				<div className="hidden md:flex items-center gap-4 border-r pr-2 mr-2 shrink-0">
+					<div className="flex items-center gap-1.5">
+						{COLORS.map((color) => (
+							<button
+								key={color.value}
+								onClick={() => setPreviewSettings({ themeColor: color.value })}
+								className={clsx(
+									"h-4 w-4 rounded-full ring-offset-background transition-all hover:scale-110 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+									color.class,
+									settings.themeColor === color.value &&
+										"ring-2 ring-ring ring-offset-2",
+								)}
+								title={color.name}
+							/>
+						))}
+					</div>
+					<div className="flex items-center gap-2">
+						<Type className="h-4 w-4 text-muted-foreground" />
+						<Select
+							value={settings.font}
+							onValueChange={(v) => setPreviewSettings({ font: v })}
+						>
+							<SelectTrigger className="h-7 w-[110px] text-xs border-none bg-transparent focus:ring-0 px-1 gap-1">
+								<SelectValue placeholder="Font" />
+							</SelectTrigger>
+							<SelectContent>
+								{FONTS.map((font) => (
+									<SelectItem key={font.value} value={font.value} className="text-xs">
+										{font.name}
+									</SelectItem>
+								))}
+							</SelectContent>
+						</Select>
+					</div>
 				</div>
 
-				{/* Fonts */}
-				<div className="flex items-center gap-2 border-r pr-2 mr-2 shrink-0">
-					<Type className="h-4 w-4 text-muted-foreground" />
-					<Select
-						value={settings.font}
-						onValueChange={(v) => setPreviewSettings({ font: v })}
-					>
-						<SelectTrigger className="h-7 w-[110px] text-xs border-none bg-transparent focus:ring-0 px-1 gap-1">
-							<SelectValue placeholder="Font" />
-						</SelectTrigger>
-						<SelectContent>
-							{FONTS.map((font) => (
-								<SelectItem key={font.value} value={font.value} className="text-xs">
-									{font.name}
-								</SelectItem>
-							))}
-						</SelectContent>
-					</Select>
+				{/* Mobile: Settings Button */}
+				<div className="md:hidden border-r pr-2 mr-2 shrink-0">
+					<Sheet>
+						<SheetTrigger asChild>
+							<Button variant="ghost" size="icon" className="h-8 w-8">
+								<Settings2 className="h-4 w-4" />
+							</Button>
+						</SheetTrigger>
+						<SheetContent side="bottom" className="h-[50vh]">
+							<SheetHeader>
+								<SheetTitle>Preview Settings</SheetTitle>
+								<SheetDescription>
+									Customize the look of your generated UI.
+								</SheetDescription>
+							</SheetHeader>
+							<div className="flex flex-col gap-6 py-6">
+								<div className="space-y-3">
+									<h4 className="font-medium text-sm text-muted-foreground">
+										Theme Color
+									</h4>
+									<div className="flex flex-wrap gap-3">
+										{COLORS.map((color) => (
+											<button
+												key={color.value}
+												onClick={() =>
+													setPreviewSettings({ themeColor: color.value })
+												}
+												className={clsx(
+													"h-8 w-8 rounded-full ring-offset-background transition-all hover:scale-110 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+													color.class,
+													settings.themeColor === color.value &&
+														"ring-2 ring-ring ring-offset-2",
+												)}
+												title={color.name}
+											/>
+										))}
+									</div>
+								</div>
+
+								<div className="space-y-3">
+									<h4 className="font-medium text-sm text-muted-foreground">
+										Font Family
+									</h4>
+									<div className="grid grid-cols-2 gap-2">
+										{FONTS.map((font) => (
+											<Button
+												key={font.value}
+												variant={
+													settings.font === font.value
+														? "default"
+														: "outline"
+												}
+												size="sm"
+												onClick={() =>
+													setPreviewSettings({ font: font.value })
+												}
+												className="justify-start"
+											>
+												{font.name}
+											</Button>
+										))}
+									</div>
+								</div>
+							</div>
+						</SheetContent>
+					</Sheet>
 				</div>
 
 				{/* Zoom Controls */}
@@ -312,7 +421,12 @@ export default function ResultPanel() {
 			</div>
 
 			{/* Content Area */}
-			<div className="flex-1 overflow-hidden bg-muted/20 flex items-center justify-center relative">
+			<div
+				className="flex-1 overflow-hidden bg-muted/20 flex items-center justify-center relative"
+				onTouchStart={handleTouchStart}
+				onTouchMove={handleTouchMove}
+				onTouchEnd={handleTouchEnd}
+			>
 				{isGenerating ? (
 					// Loading State
 					<div className="flex h-full flex-col items-center justify-center gap-6 p-8 w-full max-w-4xl">
@@ -330,7 +444,8 @@ export default function ResultPanel() {
 								<Skeleton className="h-4 w-5/6" />
 								<Skeleton className="h-4 w-4/6" />
 							</div>
-							<div className="flex justify-center mt-4">
+							<div className="flex flex-col items-center justify-center mt-4 gap-2">
+								<Loader2 className="h-8 w-8 animate-spin text-primary" />
 								<span className="text-sm text-muted-foreground animate-bounce">
 									Generating your UI...
 								</span>

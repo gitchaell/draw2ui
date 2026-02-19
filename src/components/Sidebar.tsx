@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useStore } from "@nanostores/react";
-import { currentProjectStore, setProjects, setCurrentProject } from "../stores/appStore";
+import { currentProjectStore, setProjects, setCurrentProject, setViewMode } from "../stores/appStore";
 import { db } from "../lib/db";
 import clsx from "clsx";
 import SidebarList from "./SidebarList";
@@ -17,6 +17,10 @@ export default function Sidebar() {
 				setProjects(data.sort((a, b) => b.updatedAt - a.updatedAt));
 				if (data.length > 0 && !currentProject) {
 					setCurrentProject(data[0].id);
+					// Ensure we are in whiteboard mode on mobile initially
+					if (window.innerWidth < 768) {
+						setViewMode("draw");
+					}
 				}
 			} catch (error) {
 				console.error("Failed to load projects", error);
