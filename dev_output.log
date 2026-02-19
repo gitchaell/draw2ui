@@ -1,0 +1,18 @@
+
+> draw2ui@0.0.1 dev
+> astro dev
+
+17:17:24 [types] Generated 1ms
+17:17:24 [content] Syncing content
+17:17:24 [content] Synced content
+17:17:24 [vite] Re-optimizing dependencies because vite config has changed
+
+ astro  v5.17.2 ready in 664 ms
+
+┃ Local    http://localhost:4321/
+┃ Network  use --host to expose
+
+17:17:24 watching for file changes...
+17:18:02 [200] / 137ms
+17:18:06 [vite] ✨ new dependencies optimized: @vercel/analytics/react
+17:18:06 [vite] ✨ optimized dependencies changed. reloading
