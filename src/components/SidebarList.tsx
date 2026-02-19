@@ -196,11 +196,11 @@ export default function SidebarList({
 			</ScrollArea>
 
 			{/* Footer */}
-			<div className="p-4 border-t bg-muted/20">
+			<div className="h-14 px-4 border-t bg-muted/20 flex items-center">
 				<div
 					className={clsx(
-						"flex items-center gap-2",
-						!collapsed ? "justify-between" : "justify-center flex-col gap-4",
+						"flex items-center gap-2 w-full",
+						!collapsed ? "justify-between" : "justify-center",
 					)}
 				>
 					{!collapsed && (
