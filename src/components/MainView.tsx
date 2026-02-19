@@ -51,16 +51,16 @@ export default function MainView({ whiteboard, result }: MainViewProps) {
 					defaultSize={50}
 					minSize={20}
 					order={1}
-					className="bg-gray-50 dark:bg-zinc-900 h-full"
+					className="bg-muted/30 h-full"
 				>
 					{whiteboard}
 				</Panel>
-				<PanelResizeHandle className="w-1 bg-gray-200 dark:bg-zinc-800 hover:bg-indigo-500 dark:hover:bg-indigo-500 transition-colors cursor-col-resize z-10" />
+				<PanelResizeHandle className="w-1 bg-border hover:bg-primary transition-colors cursor-col-resize z-10" />
 				<Panel
 					defaultSize={50}
 					minSize={20}
 					order={2}
-					className="bg-white dark:bg-black h-full"
+					className="bg-background h-full"
 				>
 					{result}
 				</Panel>
