@@ -6,6 +6,7 @@ import type { AppState, ExcalidrawImperativeAPI } from "@excalidraw/excalidraw/t
 import { useStore } from "@nanostores/react";
 import { themeStore } from "../stores/appStore";
 import { db } from "../lib/db";
+import { LO_FI_WIREFRAMING_KIT } from "../lib/lo-fi-wireframing-kit";
 
 interface WhiteboardWrapperProps {
 	projectId: string;
@@ -105,6 +106,7 @@ const WhiteboardWrapper = forwardRef<WhiteboardWrapperRef, WhiteboardWrapperProp
 				<Excalidraw
 					theme={theme}
 					initialData={{
+						libraryItems: LO_FI_WIREFRAMING_KIT.library as any, // Cast to any to avoid strict type checks on readonly arrays
 						appState: {
 							viewBackgroundColor:
 								theme === "dark" ? "#242427" : "#ffffff",
