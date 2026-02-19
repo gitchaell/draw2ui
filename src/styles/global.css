@@ -131,5 +131,5 @@
 	--color-background: var(--background) !important;
 	--color-surface: var(--card) !important;
 	--color-surface-low: var(--card) !important;
-    --color-primary: var(--primary) !important;
+	--color-primary: var(--primary) !important;
 }

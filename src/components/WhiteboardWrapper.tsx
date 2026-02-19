@@ -52,8 +52,7 @@ const WhiteboardWrapper = forwardRef<WhiteboardWrapperRef, WhiteboardWrapperProp
 						excalidrawAPI.updateScene({
 							elements: data.elements?.length ? data.elements : undefined,
 							appState: data.appState || {
-								viewBackgroundColor:
-									theme === "dark" ? "#242427" : "#ffffff",
+								viewBackgroundColor: theme === "dark" ? "#242427" : "#ffffff",
 							},
 						});
 					}
@@ -108,8 +107,7 @@ const WhiteboardWrapper = forwardRef<WhiteboardWrapperRef, WhiteboardWrapperProp
 					initialData={{
 						libraryItems: LO_FI_WIREFRAMING_KIT.library as any, // Cast to any to avoid strict type checks on readonly arrays
 						appState: {
-							viewBackgroundColor:
-								theme === "dark" ? "#242427" : "#ffffff",
+							viewBackgroundColor: theme === "dark" ? "#242427" : "#ffffff",
 							currentItemFontFamily: 1,
 							gridSize: 20,
 						},

@@ -11,58 +11,74 @@ const { title, description = "Design your UI quickly and practically with AI." }
 ---
 
 <!doctype html>
-<html lang="en" class="dark">
+<html lang='en' class='dark'>
 	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-		<link rel="icon" type="image/svg+xml" href="/icon.svg" />
-		<link rel="manifest" href="/manifest.json" />
-		<meta name="generator" content={Astro.generator} />
+		<meta charset='UTF-8' />
+		<meta
+			name='viewport'
+			content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'
+		/>
+		<link rel='icon' type='image/svg+xml' href='/icon.svg' />
+		<link rel='manifest' href='/manifest.json' />
+		<meta name='generator' content={Astro.generator} />
 		<title>{title}</title>
-		<meta name="description" content={description} />
+		<meta name='description' content={description} />
 
 		<!-- Open Graph / Facebook -->
-		<meta property="og:type" content="website" />
-		<meta property="og:url" content="https://fromdrawtoui.vercel.app/" />
-		<meta property="og:title" content={title} />
-		<meta property="og:description" content={description} />
-		<meta property="og:image" content="https://fromdrawtoui.vercel.app/og-image.png" />
+		<meta property='og:type' content='website' />
+		<meta property='og:url' content='https://fromdrawtoui.vercel.app/' />
+		<meta property='og:title' content={title} />
+		<meta property='og:description' content={description} />
+		<meta
+			property='og:image'
+			content='https://fromdrawtoui.vercel.app/og-image.png'
+		/>
 
 		<!-- Twitter -->
-		<meta property="twitter:card" content="summary_large_image" />
-		<meta property="twitter:url" content="https://fromdrawtoui.vercel.app/" />
-		<meta property="twitter:title" content={title} />
-		<meta property="twitter:description" content={description} />
-		<meta property="twitter:image" content="https://fromdrawtoui.vercel.app/og-image.png" />
+		<meta property='twitter:card' content='summary_large_image' />
+		<meta property='twitter:url' content='https://fromdrawtoui.vercel.app/' />
+		<meta property='twitter:title' content={title} />
+		<meta property='twitter:description' content={description} />
+		<meta
+			property='twitter:image'
+			content='https://fromdrawtoui.vercel.app/og-image.png'
+		/>
 
 		<!-- Fonts -->
-		<link rel="preconnect" href="https://fonts.googleapis.com">
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+		<link rel='preconnect' href='https://fonts.googleapis.com' />
+		<link rel='preconnect' href='https://fonts.gstatic.com' crossorigin />
+		<link
+			href='https://fonts.googleapis.com/css2?family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap'
+			rel='stylesheet'
+		/>
 
 		<!-- Theme Script -->
 		<script is:inline>
 			// Check local storage for theme, default to dark
 			const theme = (() => {
-				if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
-					return localStorage.getItem('theme');
+				if (
+					typeof localStorage !== 'undefined' &&
+					localStorage.getItem('theme')
+				) {
+					return localStorage.getItem('theme')
 				}
 				if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-					return 'dark';
+					return 'dark'
 				}
-				return 'dark'; // Default
-			})();
+				return 'dark' // Default
+			})()
 
 			if (theme === 'light') {
-				document.documentElement.classList.remove('dark');
+				document.documentElement.classList.remove('dark')
 			} else {
-				document.documentElement.classList.add('dark');
+				document.documentElement.classList.add('dark')
 			}
 
-			window.localStorage.setItem('theme', theme);
+			window.localStorage.setItem('theme', theme)
 		</script>
 	</head>
-	<body class="h-[100dvh] w-screen overflow-hidden bg-background text-foreground font-sans">
+	<body
+		class='h-[100dvh] w-screen overflow-hidden bg-background text-foreground font-sans'>
 		<slot />
 		<Analytics client:idle />
 	</body>

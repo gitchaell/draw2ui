@@ -47,21 +47,11 @@ export default function MainView({ whiteboard, result }: MainViewProps) {
 	return (
 		<main className="flex-1 w-full overflow-hidden flex">
 			<PanelGroup direction="horizontal">
-				<Panel
-					defaultSize={50}
-					minSize={20}
-					order={1}
-					className="bg-muted/30 h-full"
-				>
+				<Panel defaultSize={50} minSize={20} order={1} className="bg-muted/30 h-full">
 					{whiteboard}
 				</Panel>
 				<PanelResizeHandle className="w-1 bg-border hover:bg-primary transition-colors cursor-col-resize z-10" />
-				<Panel
-					defaultSize={50}
-					minSize={20}
-					order={2}
-					className="bg-background h-full"
-				>
+				<Panel defaultSize={50} minSize={20} order={2} className="bg-background h-full">
 					{result}
 				</Panel>
 			</PanelGroup>
