@@ -15,9 +15,9 @@ export default function BottomBar({ onGenerate }: BottomBarProps) {
     const [open, setOpen] = useState(false);
 
 	return (
-		<div className="w-full border-t bg-background p-2 z-50 flex items-center justify-center shrink-0">
+		<div className="w-full border-t bg-background p-2 z-50 flex items-center justify-center shrink-0 relative">
             {/* Mobile Navigation */}
-            <div className="md:hidden flex flex-1 items-center justify-around w-full">
+            <div className="md:hidden flex flex-1 items-center justify-between w-full relative">
                 <Sheet open={open} onOpenChange={setOpen}>
                     <SheetTrigger asChild>
                         <Button
@@ -44,14 +44,8 @@ export default function BottomBar({ onGenerate }: BottomBarProps) {
                     <span className="text-xs">Whiteboard</span>
                 </Button>
 
-                 <Button
-                    variant="default"
-                    onClick={onGenerate}
-                    className="flex-1 flex-col h-14 gap-1 rounded-md"
-                >
-                    <ArrowRight className="h-5 w-5" />
-                    <span className="text-xs">Generate</span>
-                </Button>
+                {/* Spacer for Floating Button */}
+                <div className="w-16 shrink-0" />
 
                 <Button
                     variant={viewMode === 'code' ? 'default' : 'ghost'}
@@ -61,11 +55,26 @@ export default function BottomBar({ onGenerate }: BottomBarProps) {
                     <Code className="h-5 w-5" />
                     <span className="text-xs">UI</span>
                 </Button>
+
+                {/* Dummy spacer to balance the layout (Projects button width + separator) */}
+                <div className="w-px h-8 mx-1 invisible" />
+                <div className="min-w-[4rem] px-2 invisible" />
+
+                 {/* Floating Generate Button */}
+                <div className="absolute left-1/2 -translate-x-1/2 -top-6">
+                    <Button
+                        variant="default"
+                        onClick={onGenerate}
+                        className="rounded-full h-14 w-14 p-0 shadow-lg"
+                    >
+                        <ArrowRight className="h-6 w-6" />
+                    </Button>
+                </div>
             </div>
 
             {/* Desktop Generate Button */}
             <div className="hidden md:flex">
-                 <Button onClick={onGenerate} className="gap-2">
+                 <Button onClick={onGenerate} className="gap-2 rounded-full shadow-lg">
                     <ArrowRight className="h-4 w-4" />
                     Generate UI
                 </Button>
