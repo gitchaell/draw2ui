@@ -9,9 +9,10 @@ import {
 import { db } from "../lib/db";
 import clsx from "clsx";
 import ThemeToggle from "./ThemeToggle";
-import { Plus, Trash2, Folder, PanelLeftClose, PanelLeftOpen, Settings } from "lucide-react";
+import { Plus, Trash2, Folder, PanelLeftClose, PanelLeftOpen, Settings, Pencil } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Input } from "@/components/ui/input";
 import SettingsDialog from "./SettingsDialog";
 
 interface SidebarListProps {
@@ -29,6 +30,8 @@ export default function SidebarList({
 	const currentProject = useStore(currentProjectStore);
 	const [loading, setLoading] = useState(false);
 	const [showSettings, setShowSettings] = useState(false);
+	const [editingId, setEditingId] = useState<string | null>(null);
+	const [editName, setEditName] = useState("");
 
 	const handleCreateProject = async () => {
 		setLoading(true);
@@ -61,7 +64,34 @@ export default function SidebarList({
 		}
 	};
 
+	const handleStartEditing = (e: React.MouseEvent, project: { id: string; name: string }) => {
+		e.stopPropagation();
+		setEditingId(project.id);
+		setEditName(project.name);
+	};
+
+	const handleRenameProject = async () => {
+		if (!editingId || !editName.trim()) {
+			setEditingId(null);
+			return;
+		}
+
+		try {
+			await db.renameProject(editingId, editName);
+			const updatedProjects = projects.map((p) =>
+				p.id === editingId ? { ...p, name: editName } : p,
+			);
+			setProjects(updatedProjects);
+		} catch (error) {
+			console.error("Failed to rename project", error);
+		} finally {
+			setEditingId(null);
+			setEditName("");
+		}
+	};
+
 	const handleSelectProject = (id: string) => {
+		if (editingId) return; // Prevent selection while editing
 		setCurrentProject(id);
 		if (onSelect) onSelect();
 	};
@@ -162,30 +192,61 @@ export default function SidebarList({
 										)}
 										title={project.name}
 									>
-										<div className="flex items-center gap-2 overflow-hidden">
-											<Folder
-												className={clsx(
-													"h-4 w-4 shrink-0",
-													currentProject === project.id
-														? "text-foreground"
-														: "text-muted-foreground",
-												)}
-											/>
-											{!collapsed && (
-												<span className="truncate">{project.name}</span>
-											)}
-										</div>
+										{editingId === project.id && !collapsed ? (
+											<div className="flex items-center gap-2 w-full">
+												<Input
+													value={editName}
+													onChange={(e) => setEditName(e.target.value)}
+													onBlur={handleRenameProject}
+													onKeyDown={(e) => {
+														if (e.key === "Enter") handleRenameProject();
+														if (e.key === "Escape") {
+															setEditingId(null);
+															e.stopPropagation();
+														}
+													}}
+													autoFocus
+													className="h-7 text-xs"
+													onClick={(e) => e.stopPropagation()}
+												/>
+											</div>
+										) : (
+											<>
+												<div className="flex items-center gap-2 overflow-hidden">
+													<Folder
+														className={clsx(
+															"h-4 w-4 shrink-0",
+															currentProject === project.id
+																? "text-foreground"
+																: "text-muted-foreground",
+														)}
+													/>
+													{!collapsed && <span className="truncate">{project.name}</span>}
+												</div>
 
-										{!collapsed && (
-											<Button
-												variant="ghost"
-												size="icon"
-												onClick={(e) => handleDeleteProject(e, project.id)}
-												className="opacity-0 group-hover:opacity-100 h-6 w-6 hover:bg-destructive/10 hover:text-destructive"
-												title="Delete"
-											>
-												<Trash2 className="h-3 w-3" />
-											</Button>
+												{!collapsed && (
+													<div className="flex items-center gap-1 opacity-0 group-hover:opacity-100">
+														<Button
+															variant="ghost"
+															size="icon"
+															onClick={(e) => handleStartEditing(e, project)}
+															className="h-6 w-6 hover:bg-primary/10 hover:text-primary"
+															title="Rename"
+														>
+															<Pencil className="h-3 w-3" />
+														</Button>
+														<Button
+															variant="ghost"
+															size="icon"
+															onClick={(e) => handleDeleteProject(e, project.id)}
+															className="h-6 w-6 hover:bg-destructive/10 hover:text-destructive"
+															title="Delete"
+														>
+															<Trash2 className="h-3 w-3" />
+														</Button>
+													</div>
+												)}
+											</>
 										)}
 									</div>
 								))}

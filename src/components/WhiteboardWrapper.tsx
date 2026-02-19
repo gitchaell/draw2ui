@@ -22,7 +22,7 @@ export interface WhiteboardWrapperRef {
 }
 
 const WhiteboardWrapper = forwardRef<WhiteboardWrapperRef, WhiteboardWrapperProps>(
-	({ projectId, onGenerate }, ref) => {
+	({ projectId, onGenerate: _onGenerate }, ref) => {
 		const theme = useStore(themeStore);
 		const [excalidrawAPI, setExcalidrawAPI] = useState<ExcalidrawImperativeAPI | null>(null);
 		const [loaded, setLoaded] = useState(false);

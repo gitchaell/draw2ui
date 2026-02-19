@@ -16,13 +16,18 @@ export const POST: APIRoute = async ({ request }) => {
 			return new Response(JSON.stringify({ error: "No image provided" }), { status: 400 });
 		}
 
-		if (!process.env.GOOGLE_API_KEY) {
-			return new Response(JSON.stringify({ error: "GOOGLE_API_KEY is not configured" }), {
-				status: 500,
-			});
+		const apiKey = process.env.GOOGLE_API_KEY || process.env.GEMINI_API_KEY;
+
+		if (!apiKey) {
+			return new Response(
+				JSON.stringify({ error: "GOOGLE_API_KEY or GEMINI_API_KEY is not configured" }),
+				{
+					status: 500,
+				},
+			);
 		}
 
-		const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
+		const genAI = new GoogleGenerativeAI(apiKey);
 		// Using 'gemini-1.5-flash' as requested
 		const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
