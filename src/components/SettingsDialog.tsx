@@ -1,3 +1,4 @@
+import { useStore } from "@nanostores/react";
 import {
 	Dialog,
 	DialogContent,
@@ -5,6 +6,8 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog";
+import { settingsStore } from "../stores/appStore";
+import { formatCurrency } from "../lib/formatters";
 import ThemeToggle from "./ThemeToggle";
 
 interface SettingsDialogProps {
@@ -13,6 +16,8 @@ interface SettingsDialogProps {
 }
 
 export default function SettingsDialog({ open, onOpenChange }: SettingsDialogProps) {
+	const settings = useStore(settingsStore);
+
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
 			<DialogContent>
@@ -26,8 +31,14 @@ export default function SettingsDialog({ open, onOpenChange }: SettingsDialogPro
 						<ThemeToggle />
 					</div>
 					<div className="flex items-center justify-between">
+						<span className="text-sm font-medium">Credits</span>
+						<span className="text-sm text-muted-foreground">
+							{formatCurrency(settings.credits)}
+						</span>
+					</div>
+					<div className="flex items-center justify-between">
 						<span className="text-sm font-medium">Version</span>
-						<span className="text-sm text-muted-foreground">v0.0.1</span>
+						<span className="text-sm text-muted-foreground">v0.0.2</span>
 					</div>
 				</div>
 			</DialogContent>

@@ -9,10 +9,20 @@ import {
 import { db } from "../lib/db";
 import clsx from "clsx";
 import ThemeToggle from "./ThemeToggle";
-import { Plus, Trash2, Folder, PanelLeftClose, PanelLeftOpen, Settings, Pencil } from "lucide-react";
+import {
+	Plus,
+	Trash2,
+	Folder,
+	PanelLeftClose,
+	PanelLeftOpen,
+	Settings,
+	Pencil,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { formatDate } from "@/lib/formatters";
 import SettingsDialog from "./SettingsDialog";
 
 interface SidebarListProps {
@@ -171,86 +181,125 @@ export default function SidebarList({
 								)}
 							</div>
 						) : (
-							<div className="space-y-1">
-								{projects.map((project) => (
-									// biome-ignore lint/a11y/useSemanticElements: Interactive element containing another interactive element
-									<div
-										key={project.id}
-										role="button"
-										tabIndex={0}
-										onClick={() => handleSelectProject(project.id)}
-										onKeyDown={(e) => {
-											if (e.key === "Enter" || e.key === " ") {
-												handleSelectProject(project.id);
-											}
-										}}
-										className={clsx(
-											"group flex items-center justify-between rounded-md px-2 py-1.5 text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 cursor-pointer",
-											currentProject === project.id
-												? "bg-secondary text-secondary-foreground"
-												: "hover:bg-accent hover:text-accent-foreground text-muted-foreground",
-										)}
-										title={project.name}
-									>
-										{editingId === project.id && !collapsed ? (
-											<div className="flex items-center gap-2 w-full">
-												<Input
-													value={editName}
-													onChange={(e) => setEditName(e.target.value)}
-													onBlur={handleRenameProject}
+							<TooltipProvider>
+								<div className="space-y-1">
+									{projects.map((project) => (
+										<Tooltip key={project.id}>
+											<TooltipTrigger asChild>
+												{/* biome-ignore lint/a11y/useSemanticElements: Interactive element containing another interactive element */}
+												<div
+													role="button"
+													tabIndex={0}
+													onClick={() => handleSelectProject(project.id)}
 													onKeyDown={(e) => {
-														if (e.key === "Enter") handleRenameProject();
-														if (e.key === "Escape") {
-															setEditingId(null);
-															e.stopPropagation();
+														if (e.key === "Enter" || e.key === " ") {
+															handleSelectProject(project.id);
 														}
 													}}
-													autoFocus
-													className="h-7 text-xs"
-													onClick={(e) => e.stopPropagation()}
-												/>
-											</div>
-										) : (
-											<>
-												<div className="flex items-center gap-2 overflow-hidden">
-													<Folder
-														className={clsx(
-															"h-4 w-4 shrink-0",
-															currentProject === project.id
-																? "text-foreground"
-																: "text-muted-foreground",
-														)}
-													/>
-													{!collapsed && <span className="truncate">{project.name}</span>}
-												</div>
+													className={clsx(
+														"group flex items-center justify-between rounded-md px-2 py-1.5 text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 cursor-pointer",
+														currentProject === project.id
+															? "bg-secondary text-secondary-foreground"
+															: "hover:bg-accent hover:text-accent-foreground text-muted-foreground",
+													)}
+												>
+													{editingId === project.id && !collapsed ? (
+														<div className="flex items-center gap-2 w-full">
+															<Input
+																value={editName}
+																onChange={(e) =>
+																	setEditName(e.target.value)
+																}
+																onBlur={handleRenameProject}
+																onKeyDown={(e) => {
+																	if (e.key === "Enter")
+																		handleRenameProject();
+																	if (e.key === "Escape") {
+																		setEditingId(null);
+																		e.stopPropagation();
+																	}
+																}}
+																autoFocus
+																className="h-7 text-xs"
+																onClick={(e) => e.stopPropagation()}
+															/>
+														</div>
+													) : (
+														<>
+															<div className="flex items-center gap-2 overflow-hidden flex-1">
+																<Folder
+																	className={clsx(
+																		"h-4 w-4 shrink-0",
+																		currentProject ===
+																			project.id
+																			? "text-foreground"
+																			: "text-muted-foreground",
+																	)}
+																/>
+																{!collapsed && (
+																	<div className="flex flex-col overflow-hidden">
+																		<span className="truncate">
+																			{project.name}
+																		</span>
+																		<span className="text-[10px] text-muted-foreground truncate">
+																			{formatDate(
+																				project.updatedAt,
+																				"short",
+																			)}
+																		</span>
+																	</div>
+																)}
+															</div>
 
-												{!collapsed && (
-													<div className="flex items-center gap-1 opacity-0 group-hover:opacity-100">
-														<Button
-															variant="ghost"
-															size="icon"
-															onClick={(e) => handleStartEditing(e, project)}
-															className="h-6 w-6 hover:bg-primary/10 hover:text-primary"
-															title="Rename"
-														>
-															<Pencil className="h-3 w-3" />
-														</Button>
-														<Button
-															variant="ghost"
-															size="icon"
-															onClick={(e) => handleDeleteProject(e, project.id)}
-															className="h-6 w-6 hover:bg-destructive/10 hover:text-destructive"
-															title="Delete"
-														>
-															<Trash2 className="h-3 w-3" />
-														</Button>
-													</div>
-												)}
-											</>
-										)}
-									</div>
-								))}
-							</div>
+															{!collapsed && (
+																<div className="flex items-center gap-1 opacity-0 group-hover:opacity-100">
+																	<Button
+																		variant="ghost"
+																		size="icon"
+																		onClick={(e) =>
+																			handleStartEditing(
+																				e,
+																				project,
+																			)
+																		}
+																		className="h-6 w-6 hover:bg-primary/10 hover:text-primary"
+																		title="Rename"
+																	>
+																		<Pencil className="h-3 w-3" />
+																	</Button>
+																	<Button
+																		variant="ghost"
+																		size="icon"
+																		onClick={(e) =>
+																			handleDeleteProject(
+																				e,
+																				project.id,
+																			)
+																		}
+																		className="h-6 w-6 hover:bg-destructive/10 hover:text-destructive"
+																		title="Delete"
+																	>
+																		<Trash2 className="h-3 w-3" />
+																	</Button>
+																</div>
+															)}
+														</>
+													)}
+												</div>
+											</TooltipTrigger>
+											<TooltipContent side="right">
+												<p>Project: {project.name}</p>
+												<p className="text-xs text-muted-foreground">
+													Created: {formatDate(project.createdAt, "full")}
+												</p>
+												<p className="text-xs text-muted-foreground">
+													Updated: {formatDate(project.updatedAt, "full")}
+												</p>
+											</TooltipContent>
+										</Tooltip>
+									))}
+								</div>
+							</TooltipProvider>
 						)}
 					</div>
 				</div>

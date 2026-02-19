@@ -43,13 +43,14 @@ Your task is to convert the provided wireframe/sketch into a high-fidelity, prod
 
 Requirements:
 1.  **Framework:** Use ONLY standard HTML and Tailwind CSS (v3/v4 compatible). No external CSS files.
-2.  **Responsiveness:** The layout must be responsive (mobile-first or adaptable).
-3.  **Theme:** Support Dark Mode. Use 'dark:' classes for dark mode variants. The user prefers '${theme || "system"}' mode.
-4.  **Fonts:** Use 'font-sans' (Google Sans/Inter) for text and 'font-mono' (Google Sans Code) for code/numbers.
-5.  **Colors:** Use a modern, clean palette. Use 'indigo-600' as the primary color unless the sketch implies otherwise.
-6.  **Icons:** Use inline SVGs for icons (Heroicons style). Do not use external icon libraries.
-7.  **Output:** Return ONLY the raw HTML string (e.g., <div class="...">...</div>). Do NOT wrap in markdown code blocks. Do not include <!DOCTYPE html> or <html> tags, just the component markup.
-8.  **Context:** The user might provide extra instructions.
+2.  **Responsiveness:** The layout must be responsive (mobile-first or adaptable). Use Flexbox and Grid to ensure proper alignment and spacing.
+3.  **Visual Harmony:** Ensure the design is visually balanced, with consistent spacing (padding/margin), proper alignment, and no broken or overlapping elements. Prioritize clarity and usability.
+4.  **Theme:** Support Dark Mode. Use 'dark:' classes for dark mode variants. The user prefers '${theme || "system"}' mode.
+5.  **Fonts:** Use 'font-sans' (Google Sans/Inter) for text and 'font-mono' (Google Sans Code) for code/numbers.
+6.  **Colors:** Use a modern, clean palette. Use 'indigo-600' as the primary color unless the sketch implies otherwise. Ensure high contrast and accessibility.
+7.  **Icons:** Use inline SVGs for icons (Heroicons style). Do not use external icon libraries.
+8.  **Output:** Return ONLY the raw HTML string (e.g., <div class="...">...</div>). Do NOT wrap in markdown code blocks. Do not include <!DOCTYPE html> or <html> tags, just the component markup.
+9.  **Context:** The user might provide extra instructions.
 
 User Instructions: ${prompt || "None"}
 `;
