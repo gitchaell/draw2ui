@@ -52,7 +52,7 @@ const WhiteboardWrapper = forwardRef<WhiteboardWrapperRef, WhiteboardWrapperProp
 							elements: data.elements?.length ? data.elements : undefined,
 							appState: data.appState || {
 								viewBackgroundColor:
-									theme === "dark" ? "hsl(240 6% 10%)" : "hsl(0 0% 98%)",
+									theme === "dark" ? "#242427" : "#ffffff",
 							},
 						});
 					}
@@ -107,7 +107,7 @@ const WhiteboardWrapper = forwardRef<WhiteboardWrapperRef, WhiteboardWrapperProp
 					initialData={{
 						appState: {
 							viewBackgroundColor:
-								theme === "dark" ? "hsl(240 6% 10%)" : "hsl(0 0% 98%)",
+								theme === "dark" ? "#242427" : "#ffffff",
 							currentItemFontFamily: 1,
 							gridSize: 20,
 						},

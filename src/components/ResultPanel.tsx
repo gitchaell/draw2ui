@@ -196,7 +196,7 @@ export default function ResultPanel() {
 						<div className="w-10" />
 					</div>
 					<div
-						className="w-full h-full overflow-auto bg-white dark:bg-zinc-950 text-foreground"
+						className="w-full h-full overflow-auto bg-background text-foreground"
 						ref={containerRef}
 					>
 						<div dangerouslySetInnerHTML={{ __html: getProcessedHtml() }} />
