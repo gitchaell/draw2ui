@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useStore } from '@nanostores/react';
 import { viewModeStore, setViewMode } from '../stores/appStore';
-import { PenTool, Code, Menu, Wand2 } from 'lucide-react';
+import { PenTool, Code, Menu, ArrowRight } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import SidebarList from './SidebarList';
@@ -45,11 +45,11 @@ export default function BottomBar({ onGenerate }: BottomBarProps) {
                 </Button>
 
                  <Button
-                    variant="ghost"
+                    variant="default"
                     onClick={onGenerate}
-                    className="flex-1 flex-col h-14 gap-1 rounded-md text-primary"
+                    className="flex-1 flex-col h-14 gap-1 rounded-md"
                 >
-                    <Wand2 className="h-5 w-5" />
+                    <ArrowRight className="h-5 w-5" />
                     <span className="text-xs">Generate</span>
                 </Button>
 
@@ -66,7 +66,7 @@ export default function BottomBar({ onGenerate }: BottomBarProps) {
             {/* Desktop Generate Button */}
             <div className="hidden md:flex">
                  <Button onClick={onGenerate} className="gap-2">
-                    <Wand2 className="h-4 w-4" />
+                    <ArrowRight className="h-4 w-4" />
                     Generate UI
                 </Button>
             </div>
