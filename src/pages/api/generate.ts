@@ -28,8 +28,11 @@ export const POST: APIRoute = async ({ request }) => {
 		}
 
 		const genAI = new GoogleGenerativeAI(apiKey);
-		// Using 'gemini-1.5-flash' as requested
-		const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+		// List of models to try in order of preference
+		const modelsToTry = ["gemini-1.5-flash", "gemini-1.5-flash-latest", "gemini-1.5-pro"];
+		let lastError = null;
+		let generatedHtml = null;
 
 		// Clean base64 string
 		const base64Image = image.replace(/^data:image\/(png|jpeg|jpg);base64,/, "");
@@ -58,12 +61,31 @@ User Instructions: ${prompt || "None"}
 			},
 		};
 
-		const result = await model.generateContent([promptText, imagePart]);
-		const response = await result.response;
-		let html = response.text();
+		for (const modelName of modelsToTry) {
+			try {
+				const model = genAI.getGenerativeModel({ model: modelName });
+				const result = await model.generateContent([promptText, imagePart]);
+				const response = await result.response;
+				generatedHtml = response.text();
+				// If successful, break the loop
+				break;
+			} catch (error: any) {
+				console.warn(`Model ${modelName} failed:`, error.message);
+				lastError = error;
+				// Continue to next model if it's a 404 or similar
+				if (error.message.includes("404") || error.message.includes("not found")) {
+					// continue;
+				}
+				// If it's another error (e.g. 400, 429), we could stop, but let's try fallback just in case
+			}
+		}
+
+		if (!generatedHtml) {
+			throw lastError || new Error("Failed to generate content with any model");
+		}
 
 		// Post-process cleanup
-		html = html
+		const html = generatedHtml
 			.replace(/```html/g, "")
 			.replace(/```/g, "")
 			.trim();
