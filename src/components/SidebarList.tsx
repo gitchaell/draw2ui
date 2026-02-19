@@ -9,7 +9,15 @@ import {
 import { db } from "../lib/db";
 import clsx from "clsx";
 import ThemeToggle from "./ThemeToggle";
-import { Plus, Trash2, Folder, PanelLeftClose, PanelLeftOpen, Settings, Pencil } from "lucide-react";
+import {
+	Plus,
+	Trash2,
+	Folder,
+	PanelLeftClose,
+	PanelLeftOpen,
+	Settings,
+	Pencil,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
@@ -199,10 +207,13 @@ export default function SidebarList({
 														<div className="flex items-center gap-2 w-full">
 															<Input
 																value={editName}
-																onChange={(e) => setEditName(e.target.value)}
+																onChange={(e) =>
+																	setEditName(e.target.value)
+																}
 																onBlur={handleRenameProject}
 																onKeyDown={(e) => {
-																	if (e.key === "Enter") handleRenameProject();
+																	if (e.key === "Enter")
+																		handleRenameProject();
 																	if (e.key === "Escape") {
 																		setEditingId(null);
 																		e.stopPropagation();
@@ -219,16 +230,22 @@ export default function SidebarList({
 																<Folder
 																	className={clsx(
 																		"h-4 w-4 shrink-0",
-																		currentProject === project.id
+																		currentProject ===
+																			project.id
 																			? "text-foreground"
 																			: "text-muted-foreground",
 																	)}
 																/>
 																{!collapsed && (
 																	<div className="flex flex-col overflow-hidden">
-																		<span className="truncate">{project.name}</span>
+																		<span className="truncate">
+																			{project.name}
+																		</span>
 																		<span className="text-[10px] text-muted-foreground truncate">
-																			{formatDate(project.updatedAt, "short")}
+																			{formatDate(
+																				project.updatedAt,
+																				"short",
+																			)}
 																		</span>
 																	</div>
 																)}
@@ -239,7 +256,12 @@ export default function SidebarList({
 																	<Button
 																		variant="ghost"
 																		size="icon"
-																		onClick={(e) => handleStartEditing(e, project)}
+																		onClick={(e) =>
+																			handleStartEditing(
+																				e,
+																				project,
+																			)
+																		}
 																		className="h-6 w-6 hover:bg-primary/10 hover:text-primary"
 																		title="Rename"
 																	>
@@ -248,7 +270,12 @@ export default function SidebarList({
 																	<Button
 																		variant="ghost"
 																		size="icon"
-																		onClick={(e) => handleDeleteProject(e, project.id)}
+																		onClick={(e) =>
+																			handleDeleteProject(
+																				e,
+																				project.id,
+																			)
+																		}
 																		className="h-6 w-6 hover:bg-destructive/10 hover:text-destructive"
 																		title="Delete"
 																	>

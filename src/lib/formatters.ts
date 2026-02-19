@@ -5,10 +5,7 @@ export const getLocale = (): string => {
 	return "en-US";
 };
 
-export const formatDate = (
-	date: number | Date,
-	style: "short" | "full" = "short",
-): string => {
+export const formatDate = (date: number | Date, style: "short" | "full" = "short"): string => {
 	const options: Intl.DateTimeFormatOptions = {
 		month: style === "short" ? "short" : "long",
 		day: "numeric",

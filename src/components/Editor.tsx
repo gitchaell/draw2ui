@@ -3,6 +3,8 @@ import {
 	currentProjectStore,
 	currentProjectDataStore,
 	setCurrentProjectData,
+	setIsGenerating,
+	setViewMode,
 } from "../stores/appStore";
 import { db } from "../lib/db";
 import WhiteboardWrapper, { type WhiteboardWrapperRef } from "./WhiteboardWrapper";
@@ -50,6 +52,7 @@ export default function Editor() {
 		if (!currentProjectId) return;
 
 		setLoading(true);
+		setIsGenerating(true);
 		try {
 			// 1. Export to Blob/Image
 			const blob = await exportToBlob({
@@ -108,6 +111,7 @@ export default function Editor() {
 			toast.error("Error generating UI.");
 		} finally {
 			setLoading(false);
+			setIsGenerating(false);
 			setIsModalOpen(false);
 		}
 	};
