@@ -3,7 +3,7 @@ import { useStore } from "@nanostores/react";
 import { currentProjectDataStore } from "../stores/appStore";
 import { toPng, toSvg } from "html-to-image";
 import clsx from "clsx";
-import { Copy, Download, Monitor, Smartphone, Tablet, Wand2 } from "lucide-react";
+import { Copy, Download, Monitor, Smartphone, Tablet, Wand2, Type } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -17,6 +17,15 @@ const COLORS = [
 	{ name: "Blue", value: "blue", class: "bg-blue-500" },
 	{ name: "Indigo", value: "indigo", class: "bg-indigo-500" },
 	{ name: "Violet", value: "violet", class: "bg-violet-500" },
+];
+
+const FONTS = [
+	{ name: "Default", value: "font-sans" },
+	{ name: "Inter", value: "font-inter" },
+	{ name: "Roboto", value: "font-roboto" },
+	{ name: "Open Sans", value: "font-open-sans" },
+	{ name: "Lato", value: "font-lato" },
+	{ name: "Poppins", value: "font-poppins" },
 ];
 
 export default function ResultPanel() {
@@ -131,6 +140,23 @@ export default function ResultPanel() {
 							title={color.name}
 						/>
 					))}
+				</div>
+
+				{/* Fonts */}
+				<div className="flex items-center gap-2 border-r pr-2 mr-2">
+					<Type className="h-4 w-4 text-muted-foreground" />
+					<select
+						value={selectedFont}
+						onChange={(e) => setSelectedFont(e.target.value)}
+						className="h-7 w-24 rounded-md border bg-transparent px-2 text-xs focus:outline-none focus:ring-2 focus:ring-ring"
+						title="Select Font"
+					>
+						{FONTS.map((font) => (
+							<option key={font.value} value={font.value}>
+								{font.name}
+							</option>
+						))}
+					</select>
 				</div>
 
 				{/* Actions */}
