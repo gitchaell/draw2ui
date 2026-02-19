@@ -3,7 +3,7 @@ import { useStore } from "@nanostores/react";
 import { currentProjectDataStore } from "../stores/appStore";
 import { toPng, toSvg } from "html-to-image";
 import clsx from "clsx";
-import { Copy, Download, Code, Monitor, Smartphone, Tablet, Wand2 } from "lucide-react";
+import { Copy, Download, Monitor, Smartphone, Tablet, Wand2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -24,7 +24,7 @@ export default function ResultPanel() {
 	const [html, setHtml] = useState("");
 	const [previewMode, setPreviewMode] = useState<"desktop" | "tablet" | "mobile">("desktop");
 	const [selectedColor, setSelectedColor] = useState("zinc");
-	const [selectedFont, setSelectedFont] = useState("font-sans");
+	const [selectedFont] = useState("font-sans");
 	const previewRef = useRef<HTMLDivElement>(null);
 	const containerRef = useRef<HTMLDivElement>(null);
 
@@ -199,6 +199,7 @@ export default function ResultPanel() {
 						className="w-full h-full overflow-auto bg-background text-foreground"
 						ref={containerRef}
 					>
+						{/* biome-ignore lint/security/noDangerouslySetInnerHtml: Intentional rendering of AI output */}
 						<div dangerouslySetInnerHTML={{ __html: getProcessedHtml() }} />
 					</div>
 				</div>

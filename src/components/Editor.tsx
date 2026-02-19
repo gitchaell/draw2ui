@@ -3,8 +3,6 @@ import {
 	currentProjectStore,
 	currentProjectDataStore,
 	setCurrentProjectData,
-	viewModeStore,
-	setViewMode,
 } from "../stores/appStore";
 import { db } from "../lib/db";
 import WhiteboardWrapper, { type WhiteboardWrapperRef } from "./WhiteboardWrapper";
@@ -18,8 +16,7 @@ import { toast, Toaster } from "sonner";
 
 export default function Editor() {
 	const currentProjectId = useStore(currentProjectStore);
-	const currentProjectData = useStore(currentProjectDataStore);
-	const viewMode = useStore(viewModeStore);
+	const _currentProjectData = useStore(currentProjectDataStore);
 
 	const whiteboardRef = useRef<WhiteboardWrapperRef>(null);
 

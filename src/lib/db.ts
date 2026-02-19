@@ -62,6 +62,12 @@ export const db = {
 		await del(`project-${id}`);
 	},
 
+	async renameProject(id: string, newName: string): Promise<void> {
+		await update(PROJECTS_KEY, (projects: Project[] = []) =>
+			projects.map((p) => (p.id === id ? { ...p, name: newName, updatedAt: Date.now() } : p)),
+		);
+	},
+
 	// Settings
 	async getSettings(): Promise<Settings> {
 		return (await get<Settings>(SETTINGS_KEY)) || DEFAULT_SETTINGS;
