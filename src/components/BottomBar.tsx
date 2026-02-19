@@ -22,10 +22,10 @@ export default function BottomBar({ onGenerate }: BottomBarProps) {
                     <SheetTrigger asChild>
                         <Button
                             variant="ghost"
-                            className="flex-col h-14 gap-1 rounded-md px-2 min-w-[4rem]"
+                            size="icon"
+                            className="h-14 w-14 rounded-md shrink-0"
                         >
-                            <Menu className="h-5 w-5" />
-                            <span className="text-xs">Projects</span>
+                            <Menu className="h-6 w-6" />
                         </Button>
                     </SheetTrigger>
                     <SheetContent side="left" className="p-0 w-[18rem]">
@@ -58,7 +58,7 @@ export default function BottomBar({ onGenerate }: BottomBarProps) {
 
                 {/* Dummy spacer to balance the layout (Projects button width + separator) */}
                 <div className="w-px h-8 mx-1 invisible" />
-                <div className="min-w-[4rem] px-2 invisible" />
+                <div className="h-14 w-14 shrink-0 invisible" />
 
                  {/* Floating Generate Button */}
                 <div className="absolute left-1/2 -translate-x-1/2 -top-6">
