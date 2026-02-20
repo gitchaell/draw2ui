@@ -38,21 +38,31 @@ export const POST: APIRoute = async ({ request }) => {
 		const base64Image = image.replace(/^data:image\/(png|jpeg|jpg);base64,/, "");
 
 		const promptText = `
-You are an expert Frontend Developer and UI Designer specializing in Tailwind CSS.
+You are an expert Senior Frontend Developer and UI Designer specializing in Tailwind CSS.
 Your task is to convert the provided wireframe/sketch into a high-fidelity, production-ready HTML component using Tailwind CSS.
+You must interpret the sketch creatively to produce a polished, modern UI.
 
-Requirements:
+**Core Requirements:**
 1.  **Framework:** Use ONLY standard HTML and Tailwind CSS (v3/v4 compatible). No external CSS files.
-2.  **Responsiveness:** The layout must be responsive (mobile-first or adaptable). Use Flexbox and Grid to ensure proper alignment and spacing.
-3.  **Visual Harmony:** Ensure the design is visually balanced, with consistent spacing (padding/margin), proper alignment, and no broken or overlapping elements. Prioritize clarity and usability.
+2.  **Responsiveness:** The layout must be fully responsive. Use Flexbox/Grid for robust alignment.
+3.  **Visual Fidelity:**
+    *   **Spacing:** Use consistent padding/margin (e.g., p-4, p-6, gap-4).
+    *   **Typography:** Use proper hierarchy (h1 vs h2 vs p). Use 'font-sans' for UI text.
+    *   **Styling:** Apply modern touches like rounded corners (rounded-lg/xl), subtle shadows (shadow-sm/md), and borders (border-border).
 4.  **Theme:** Support Dark Mode. Use 'dark:' classes for dark mode variants. The user prefers '${theme || "system"}' mode.
-5.  **Fonts:** Use 'font-sans' (Google Sans/Inter) for text and 'font-mono' (Google Sans Code) for code/numbers.
-6.  **Colors:** Use a modern, clean palette. Use 'indigo-600' as the primary color unless the sketch implies otherwise. Ensure high contrast and accessibility.
-7.  **Icons:** Use inline SVGs for icons (Heroicons style). Do not use external icon libraries.
-8.  **Output:** Return ONLY the raw HTML string (e.g., <div class="...">...</div>). Do NOT wrap in markdown code blocks. Do not include <!DOCTYPE html> or <html> tags, just the component markup.
-9.  **Context:** The user might provide extra instructions.
+5.  **Content:**
+    *   **Images:** Use placeholder images from Picsum Photos (e.g., <img src="https://picsum.photos/400/300" alt="..." class="rounded-lg object-cover" />). Adjust dimensions to fit the layout.
+    *   **Text:** Generate realistic, context-aware placeholder text (e.g., "Project Alpha", "$1,200.00", "Meeting at 10 AM") instead of "Lorem Ipsum" where possible.
+    *   **Icons:** Use inline SVGs (Lucide/Heroicons style). Ensure they are sized correctly (w-4 h-4, w-6 h-6).
 
-User Instructions: ${prompt || "None"}
+**Constraints:**
+*   Return ONLY the raw HTML string (e.g., <div class="...">...</div>).
+*   Do NOT wrap in markdown code blocks (\`\`\`html ... \`\`\`).
+*   Do NOT include <!DOCTYPE html>, <html>, <head>, or <body> tags. Start directly with the main container.
+*   Ensure all tags are properly closed.
+
+**User Instructions:**
+${prompt || "Create a modern, high-quality UI based on the sketch."}
 `;
 
 		const imagePart = {

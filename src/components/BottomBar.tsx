@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useStore } from "@nanostores/react";
-import { viewModeStore, setViewMode } from "../stores/appStore";
-import { PenTool, Code, Menu, ArrowRight } from "lucide-react";
+import { viewModeStore, setViewMode, isGeneratingStore } from "../stores/appStore";
+import { PenTool, Code, Menu, ArrowRight, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import SidebarList from "./SidebarList";
@@ -12,6 +12,7 @@ interface BottomBarProps {
 
 export default function BottomBar({ onGenerate }: BottomBarProps) {
 	const viewMode = useStore(viewModeStore);
+	const isGenerating = useStore(isGeneratingStore);
 	const [open, setOpen] = useState(false);
 
 	return (
@@ -65,18 +66,36 @@ export default function BottomBar({ onGenerate }: BottomBarProps) {
 					<Button
 						variant="default"
 						onClick={onGenerate}
+						disabled={isGenerating}
 						className="rounded-full h-14 w-14 p-0 shadow-lg"
 					>
-						<ArrowRight className="h-6 w-6" />
+						{isGenerating ? (
+							<Loader2 className="h-6 w-6 animate-spin" />
+						) : (
+							<ArrowRight className="h-6 w-6" />
+						)}
 					</Button>
 				</div>
 			</div>
 
 			{/* Desktop Generate Button */}
 			<div className="hidden md:flex">
-				<Button onClick={onGenerate} className="gap-2 rounded-full shadow-lg">
-					<ArrowRight className="h-4 w-4" />
-					Generate UI
+				<Button
+					onClick={onGenerate}
+					disabled={isGenerating}
+					className="gap-2 rounded-full shadow-lg"
+				>
+					{isGenerating ? (
+						<>
+							<Loader2 className="h-4 w-4 animate-spin" />
+							Generating...
+						</>
+					) : (
+						<>
+							<ArrowRight className="h-4 w-4" />
+							Generate UI
+						</>
+					)}
 				</Button>
 			</div>
 		</div>

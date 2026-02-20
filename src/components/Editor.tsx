@@ -4,8 +4,10 @@ import {
 	currentProjectDataStore,
 	setCurrentProjectData,
 	setIsGenerating,
+	isGeneratingStore,
 	setViewMode,
 } from "../stores/appStore";
+import { checkDailyLimit, incrementUsage } from "../lib/credits";
 import { db } from "../lib/db";
 import WhiteboardWrapper, { type WhiteboardWrapperRef } from "./WhiteboardWrapper";
 import GenerateModal from "./GenerateModal";
@@ -15,10 +17,12 @@ import BottomBar from "./BottomBar";
 import { exportToBlob } from "@excalidraw/excalidraw";
 import { useState, useCallback, useRef } from "react";
 import { toast, Toaster } from "sonner";
+import { Loader2 } from "lucide-react";
 
 export default function Editor() {
 	const currentProjectId = useStore(currentProjectStore);
 	const _currentProjectData = useStore(currentProjectDataStore);
+	const isGenerating = useStore(isGeneratingStore);
 
 	const whiteboardRef = useRef<WhiteboardWrapperRef>(null);
 
@@ -51,8 +55,18 @@ export default function Editor() {
 	const handleGenerateConfirm = async (prompt: string) => {
 		if (!currentProjectId) return;
 
+		const { allowed, remaining } = checkDailyLimit();
+		if (!allowed) {
+			toast.error("Daily limit reached", {
+				description: "You have used all 3 free generations for today. Come back tomorrow!",
+			});
+			return;
+		}
+
 		setLoading(true);
 		setIsGenerating(true);
+		setIsModalOpen(false); // Close modal immediately to show full screen loader
+
 		try {
 			// 1. Export to Blob/Image
 			const blob = await exportToBlob({
@@ -89,6 +103,9 @@ export default function Editor() {
 				// 4. Save Result
 				const html = data.html;
 				if (html) {
+					// Increment usage only on success
+					incrementUsage();
+
 					await db.updateProjectData(currentProjectId, {
 						generatedHtml: html,
 					});
@@ -103,7 +120,7 @@ export default function Editor() {
 					} else {
 						setViewMode("split");
 					}
-					toast.success("Interface generated successfully");
+					toast.success(`Interface generated! You have ${remaining - 1} credits left today.`);
 				}
 			};
 		} catch (error) {
@@ -112,7 +129,7 @@ export default function Editor() {
 		} finally {
 			setLoading(false);
 			setIsGenerating(false);
-			setIsModalOpen(false);
+			// setIsModalOpen(false); // Already closed
 		}
 	};
 
@@ -148,6 +165,25 @@ export default function Editor() {
 				onConfirm={handleGenerateConfirm}
 				loading={loading}
 			/>
+
+			{/* Full Screen Loader */}
+			{isGenerating && (
+				<div className="fixed inset-0 z-[100] bg-background/80 backdrop-blur-sm flex flex-col items-center justify-center">
+					<div className="bg-card p-8 rounded-xl shadow-2xl border flex flex-col items-center gap-6 max-w-sm text-center">
+						<div className="relative">
+							<div className="absolute inset-0 bg-primary/20 blur-xl rounded-full" />
+							<Loader2 className="h-16 w-16 animate-spin text-primary relative z-10" />
+						</div>
+						<div className="space-y-2">
+							<h3 className="text-xl font-bold">Generating UI...</h3>
+							<p className="text-muted-foreground text-sm">
+								Our AI is crafting your interface with pixel-perfect precision. This may take a moment.
+							</p>
+						</div>
+					</div>
+				</div>
+			)}
+
 			<Toaster position="top-center" />
 		</>
 	);
